@@ -1,0 +1,99 @@
+#include <stdio.h> 
+#include <stdlib.h>
+#include <string.h>
+struct Arvore { 
+int RU;
+char Nome_Aluno[50];
+char Email[50];
+struct Arvore* esq;
+struct Arvore* dir;
+};
+void cadastrar_aluno(Arvore **,int i);
+void imprime(Arvore *r);
+void imprime_ordenado(Arvore *atu);
+Arvore *busca(Arvore *arvore, int v);
+main() 
+{
+Arvore *a = NULL;
+int op; 
+int i = 0;
+do {
+printf("\n 1 - Cadastrar Aluno");
+printf("\n 2 - Pesquisar Aluno");
+printf("\n 0 - Finalizar Programa \n\n");
+scanf("%d", &op);
+switch(op)
+{
+case 1:
+cadastrar_aluno(&a, i);
+break;
+case 2:
+imprime(a);
+break;
+case 0:
+exit(0);
+}
+}while(op != 8);
+}
+void cadastrar_aluno(Arvore **a, int i)
+{
+if(*a == NULL){
+*a = (Arvore *)malloc(sizeof(Arvore));
+printf("\n\n Digite o RU do aluno: "); 
+scanf("%d", &(*a)->RU);
+printf("\n\n Digite o nome do aluno: ");
+fflush(stdin);
+scanf("%s", &(*a)->Nome_Aluno);
+printf("\n\n Digite o e-mail do aluno: ");
+fflush(stdin);
+scanf("%s", &(*a)->Email);
+(*a)->dir = NULL; 
+(*a)->esq = NULL;
+}else{
+if((*a)->RU <= (*a)->RU){
+cadastrar_aluno(&(*a)->dir, (*a)->RU);
+}else{
+cadastrar_aluno(&(*a)->esq, (*a)->RU);
+}
+}
+}
+void imprime(Arvore *r)
+{
+if(r!=NULL){
+printf("\n\n RU: %d - Nome: %s - E-mail: %s \n",r->RU, r->Nome_Aluno, r->Email); 
+imprime(r->esq);
+imprime(r->dir);
+}
+}
+void imprime_ordenado(Arvore *atu){
+if(atu->esq)
+imprime_ordenado(atu->esq);
+printf("%d ", atu->RU);
+if(atu->dir)
+imprime_ordenado(atu->dir);
+}
+Arvore *busca(Arvore *arvore, int v)
+{
+Arvore *p; 
+p = arvore;
+while(p && p->RU != v)
+{
+if(p->RU > v)
+p = p->esq;
+else
+p = p->dir;
+}
+return p; 
+}
+Arvore *buscaA(Arvore *arvore, Arvore *alu2)
+{
+Arvore *alu;
+alu = arvore;
+while(alu && alu->dir != alu2 && alu->esq != alu2 && alu != alu2){
+if(alu->RU > alu2->RU)
+alu = alu->esq;
+else
+alu = alu->dir;
+}
+return alu;
+}
